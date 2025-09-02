@@ -1,0 +1,36 @@
+CC = gcc
+CFLAGS = -lm
+GTKFLAGS = `pkg-config --cflags --libs gtk+-2.0`
+
+# Executable names
+SERVER = server
+CLIENT = client
+GUISERVER = guiServer
+
+# Source files
+SERVER_SRC = gameServer.c board.c comm.c
+CLIENT_SRC = client.c board.c comm.c
+GUISERVER_SRC = guiServer.c gameServer.c board.c comm.c
+
+# Header files
+HEADERS = global.h board.h comm.h move.h gameServer.h
+
+# Default target
+all: $(SERVER) $(CLIENT)
+
+$(SERVER): $(SERVER_SRC) $(HEADERS)
+	$(CC) -o $(SERVER) $(SERVER_SRC) $(CFLAGS)
+
+$(CLIENT): $(CLIENT_SRC) $(HEADERS)
+	$(CC) -o $(CLIENT) $(CLIENT_SRC) $(CFLAGS)
+
+$(GUISERVER): $(GUISERVER_SRC) $(HEADERS)
+	$(CC) -o $(GUISERVER) $(GUISERVER_SRC) $(CFLAGS) $(GTKFLAGS)
+
+# Specific targets
+client: $(CLIENT)
+server: $(SERVER)
+
+# Clean target
+clean:
+	rm -f $(SERVER) $(CLIENT) $(GUISERVER)
